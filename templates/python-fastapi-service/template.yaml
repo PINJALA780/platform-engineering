@@ -1,0 +1,80 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+
+metadata:
+  name: python-fastapi-service
+  title: Python FastAPI Microservice
+  description: Scaffold a production-ready FastAPI microservice
+  tags:
+    - python
+    - fastapi
+    - microservice
+    - kubernetes
+    - docker
+    - backstage
+
+spec:
+  owner: group:default/guests
+  type: service
+
+  parameters:
+    - title: Service Details
+      required:
+        - name
+        - description
+        - owner
+
+      properties:
+        name:
+          title: Service Name
+          type: string
+          description: "Example: payment-service"
+          ui:autofocus: true
+          pattern: "^[a-z0-9-]+$"
+          ui:help: "Use lowercase letters, numbers, and hyphens only"
+
+        description:
+          title: Description
+          type: string
+          description: "Brief description of the service"
+
+        owner:
+          title: Owner
+          type: string
+          default: guests
+          description: "Team responsible for this service"
+
+  steps:
+    - id: fetch-base
+      name: Generate FastAPI Project
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+
+    - id: publish
+      name: Create GitHub Repository
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=PINJALA780&repo=${{ parameters.name }}
+        description: ${{ parameters.description }}
+        defaultBranch: main
+        repoVisibility: public
+
+    - id: register
+      name: Register Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: GitHub Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+
+      - title: Open in Software Catalog
+        entityRef: ${{ steps.register.output.entityRef }}
