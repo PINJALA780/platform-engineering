@@ -64,10 +64,10 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 backend.add(import('@backstage/plugin-user-settings-backend'));
 
 // notifications and signals plugins
-backend.add(import('@backstage/plugin-notifications-backend'));
-backend.add(import('@backstage/plugin-signals-backend'));
+
+
 
 // mcp actions plugin
 backend.add(import('@backstage/plugin-mcp-actions-backend'));
-
+backend.add(import('@roadiehq/backstage-plugin-argo-cd-backend'));
 backend.start();

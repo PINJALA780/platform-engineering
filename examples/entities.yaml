@@ -7,6 +7,17 @@ spec:
     - guests
 
 ---
+
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: guests
+spec:
+  type: team
+  children: []
+
+---
+
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
@@ -15,12 +26,14 @@ spec:
   owner: group:default/guests
 
 ---
+
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: payment-service
   description: Payment Microservice
-
+  annotations:
+    backstage.io/kubernetes-id: payment-service
 spec:
   type: service
   lifecycle: development
@@ -28,19 +41,12 @@ spec:
   system: examples
 
 ---
+
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   name: payment-api
-
 spec:
   type: openapi
   lifecycle: development
   owner: group:default/guests
-  system: examples
-  definition: |
-    openapi: 3.0.0
-    info:
-      title: Payment API
-      version: 1.0.0
-    paths: {}

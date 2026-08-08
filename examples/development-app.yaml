@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+
+metadata:
+  name: development-app
+  description: Development Application
+
+  annotations:
+    backstage.io/kubernetes-id: development-app
+    backstage.io/kubernetes-namespace: development-app
+    argocd/app-name: crossplane-resources
+    datadoghq.com/service-name: development-app
+    datadoghq.com/env: development
+    datadoghq.com/version: "1.0"
+
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/guests

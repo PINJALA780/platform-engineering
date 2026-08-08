@@ -1,0 +1,56 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+
+metadata:
+  name: crossplane-s3-bucket
+  title: Create AWS S3 Bucket
+  description: Provision an AWS S3 bucket using Crossplane
+
+spec:
+  owner: group:default/guests
+  type: infrastructure
+
+  parameters:
+    - title: S3 Bucket Information
+      required:
+        - bucketName
+        - region
+      properties:
+        bucketName:
+          title: Bucket Name
+          type: string
+          description: Globally unique S3 bucket name
+          pattern: '^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$'
+
+        region:
+          title: AWS Region
+          type: string
+          description: AWS region where the S3 bucket will be created
+          default: ap-south-1
+          enum:
+            - ap-south-1
+            - ap-southeast-1
+            - us-east-1
+
+  steps:
+    - id: fetch
+      name: Generate Crossplane manifest
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          bucketName: ${{ parameters.bucketName }}
+          region: ${{ parameters.region }}
+
+    - id: publish
+      name: Publish Crossplane manifest
+      action: publish:github
+      input:
+        repoUrl: github.com?repo=crossplane-resources&owner=PINJALA780
+        description: Crossplane infrastructure resources
+        defaultBranch: main
+
+  output:
+    links:
+      - title: GitHub Repository
+        url: ${{ steps.publish.output.remoteUrl }}

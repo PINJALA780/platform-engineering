@@ -7,6 +7,8 @@ import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 import { SignInPage } from '@backstage/core-components';
 import { createFrontendModule } from '@backstage/frontend-plugin-api';
 
+import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
+
 const signInPage = SignInPageBlueprint.make({
   params: {
     loader: async () => props => (
@@ -26,6 +28,7 @@ const signInPage = SignInPageBlueprint.make({
 export default createApp({
   features: [
     catalogPlugin,
+    argoCdPlugin,
     navModule,
     createFrontendModule({
       pluginId: 'app',

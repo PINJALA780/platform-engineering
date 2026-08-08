@@ -4,13 +4,13 @@ kind: Component
 metadata:
   name: ${{ values.name }}
   description: ${{ values.description }}
-  tags:
-    - python
-    - fastapi
+
   annotations:
     backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-id: ${{ values.name }}
+    backstage.io/kubernetes-namespace: ${{ values.name }}
 
 spec:
   type: service
   lifecycle: development
-  owner: group:default/${{ values.owner }}
+  owner: ${{ values.owner }}
