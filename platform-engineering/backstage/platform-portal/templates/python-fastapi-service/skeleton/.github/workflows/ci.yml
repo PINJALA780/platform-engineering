@@ -1,4 +1,4 @@
-```yaml
+
 name: FastAPI CI/CD
 
 on:
@@ -170,4 +170,4 @@ jobs:
 
           kubectl get service \
             -n ${{ github.event.repository.name }}
-```
+
